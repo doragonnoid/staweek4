@@ -22,6 +22,10 @@ z_upper = calculate_z_score(upper_limit, mean, std_dev)
 st.write(f'**Z-score for lower limit ({lower_limit} cm):** {z_lower:.2f}')
 st.write(f'**Z-score for upper limit ({upper_limit} cm):** {z_upper:.2f}')
 
+st.latex(r"""Z = \frac{x - \mu}{\sigma}""")
+st.write(f"For lower limit: Z = ({lower_limit} - {mean}) / {std_dev} = {z_lower:.2f}")
+st.write(f"For upper limit: Z = ({upper_limit} - {mean}) / {std_dev} = {z_upper:.2f}")
+
 # Normal distribution graph and Z-score
 x = np.linspace(mean - 4*std_dev, mean + 4*std_dev, 1000)
 y = stats.norm.pdf(x, mean, std_dev)
@@ -38,11 +42,16 @@ st.pyplot(fig)
 st.header("Probability Within Range")
 probability = stats.norm.cdf(z_upper) - stats.norm.cdf(z_lower)
 st.write(f'**Probability within this range:** {probability:.4f}')
+st.latex(r"""P(a \leq X \leq b) = P(Z \leq Z_{upper}) - P(Z \leq Z_{lower})""")
+st.write(f"P({lower_limit} ≤ X ≤ {upper_limit}) = P(Z ≤ {z_upper:.2f}) - P(Z ≤ {z_lower:.2f})")
+st.write(f"= {stats.norm.cdf(z_upper):.4f} - {stats.norm.cdf(z_lower):.4f} = {probability:.4f}")
 
 # Calculating defective proportion
 st.header("Defective Bulb Proportion")
 prop_defective = 1 - probability
 st.write(f'**Proportion of defective bulbs in the manufacturing process:** {prop_defective:.4f}')
+st.latex(r"""P_{defective} = 1 - P(a \leq X \leq b)""")
+st.write(f"P_defective = 1 - {probability:.4f} = {prop_defective:.4f}")
 
 # Defective proportion graph
 fig, ax = plt.subplots()
